@@ -1,9 +1,21 @@
-const Gentre = require('../models/genre');
+const Genre = require('../models/genre');
 
 const genre = require('../models/genre');
 
 // Display list of all genres.
-exports.genre_list = (req, res) => res.send('NOT IMPLEMENTED: genre list');
+exports.genre_list = (req, res) => {
+    Genre.find()
+        .sort([['name', 'ascending']])
+        .exec((error, genreList) => {
+            if (error) {
+                return res.render('error', {
+                    message: 'Genre List Error',
+                    error,
+                });
+            }
+            return res.render('genreList', { title: 'Genre List', genreList });
+        });
+};
 
 // Display detail page for a specific genre.
 exports.genre_detail = (req, res) =>
@@ -32,4 +44,3 @@ exports.genre_update_get = (req, res) =>
 // Handle genre update on POST.
 exports.genre_update_post = (req, res) =>
     res.send('NOT IMPLEMENTED: genre update post');
-
