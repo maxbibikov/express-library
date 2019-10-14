@@ -6,18 +6,11 @@ const BookInstance = require('../models/book-instance.js');
 const Author = require('../models/author');
 const Genre = require('../models/genre');
 
-const renderError = (err, message) => {
-    if (err) {
-        return res.status(404).render('error', {
-            title: 'Error',
-            message,
-            err,
-        });
-    }
-
+const renderError = (err, message, res) => {
     return res.status(404).render('error', {
         title: 'Error',
         message,
+        err,
     });
 };
 
@@ -35,7 +28,7 @@ exports.index = (req, res) => {
         },
         (err, results) => {
             if (err) {
-                return renderError(err, 'Not found');
+                return renderError(err, 'Not found', res);
             }
 
             return res.render('index', {
@@ -52,11 +45,13 @@ exports.book_list = (req, res) => {
         .populate('author')
         .exec((err, bookList) => {
             if (err) {
-                return renderError(err);
+                return renderError(err, 'All books error', res);
             }
 
             if (!bookList) {
-                return renderError(null, 'No books');
+                const err = new Error('No books');
+                err.status = 404;
+                return renderError(null, 'No books', res);
             }
 
             const sortedBookList = bookList.sort((book, nextBook) => {
@@ -72,7 +67,7 @@ exports.book_list = (req, res) => {
                 return 0;
             });
 
-            res.render('books', {
+            res.render('bookList', {
                 title: 'Book List',
                 bookList: sortedBookList,
             });
@@ -80,8 +75,37 @@ exports.book_list = (req, res) => {
 };
 
 // Display detail page for a specific book.
-exports.book_detail = (req, res) =>
-    res.send(`NOT IMPLEMENTED: book detail: ${req.params.id}`);
+exports.book_detail = (req, res) => {
+    const { id } = req.params;
+
+    async.parallel(
+        {
+            book: (callback) =>
+                Book.findById(id)
+                    .populate('author')
+                    .populate('genre')
+                    .exec(callback),
+            bookInstanceList: (callback) =>
+                BookInstance.find({ book: id }).exec(callback),
+        },
+        (error, { book, bookInstanceList }) => {
+            if (error) {
+                return renderError(error, 'Book Detail Error', res);
+            }
+
+            if (book === null) {
+                error.status = 404;
+                return renderError(error, 'No book', res);
+            }
+
+            return res.render('book', {
+                title: `Book: ${book.title}`,
+                book,
+                bookInstanceList,
+            });
+        }
+    );
+};
 
 // Display book create form on GET.
 exports.book_create_get = (req, res) =>

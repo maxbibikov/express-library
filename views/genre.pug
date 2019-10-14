@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  h1=title
+
+  dl
+    each book in genreBooks
+      dt
+        a(href=book.url) #{book.title}
+      dd
+        p=book.summary

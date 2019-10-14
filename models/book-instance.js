@@ -15,12 +15,12 @@ const BookInstanceSchema = new Schema({
 });
 
 // Virtual for BookInstance url
-BookInstanceSchema.virtual('url').get(
-    () => `/catalog/book_instance/${this._id}`
-);
+BookInstanceSchema.virtual('url').get(function() {
+    return `/catalog/book-instance/${this._id}`;
+});
 
 // Virtual for formatted due_date
-BookInstanceSchema.virtual('due_back_formatted').get(() =>
-    moment(this.due_back).format('MMMM Do, YYYY')
-);
+BookInstanceSchema.virtual('due_back_formatted').get(function() {
+    return moment(this.due_back).format('MMMM Do, YYYY');
+});
 module.exports = mongoose.model('BookInstance', BookInstanceSchema);

@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  h1=title
+  hr
+  if author.date_of_birth && author.date_of_death
+    p #[strong Lifespan:] #{author.date_of_birth_formatted} - #{author.date_of_death_formatted}
+  else if author.date_of_birth
+    p #[strong Was born:] #{author.date_of_birth_formatted}
+  if author.lifespan
+    p #[strong Age:] #{author.lifespan}
+
+  section
+    h4 Books
+    dl
+      each authorBook in authorBookList
+        dt
+          a(href=authorBook.url) #{authorBook.title}
+        dd
+          p #{authorBook.summary}
+      else
+        p Author has no books.

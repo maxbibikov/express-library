@@ -14,7 +14,13 @@ AuthorSchema.virtual('name').get(function() {
 });
 // Virtual for author's lifespan
 AuthorSchema.virtual('lifespan').get(function() {
-    return this.date_of_death.getYear() - this.date_of_birth.getYear();
+    if (this.date_of_birth && this.date_of_death) {
+        return this.date_of_death.getYear() - this.date_of_birth.getYear();
+    } else if (this.date_of_birth) {
+        const currentYear = moment().format('YYYY');
+        return  currentYear - this.date_of_birth.getFullYear();
+    }
+    return null;
 });
 // Virtual for author's URL
 AuthorSchema.virtual('url').get(function() {

@@ -1,4 +1,5 @@
 const BookInstance = require('../models/book-instance.js');
+const Book = require('../models/book');
 
 // Display list of all bookInstances.
 exports.bookInstance_list = (req, res) => {
@@ -20,9 +21,26 @@ exports.bookInstance_list = (req, res) => {
 };
 
 // Display detail page for a specific bookInstance.
-exports.bookInstance_detail = (req, res) =>
-    res.send(`NOT IMPLEMENTED: bookInstance detail: ${req.params.id}`);
+exports.bookInstance_detail = (req, res) => {
+    const { id } = req.params;
 
+    BookInstance.findById(id)
+        .populate('book')
+        .exec((err, bookInstance) => {
+            if (err) {
+                return next(err);
+            }
+            if (!bookInstance) {
+                const error = new Error('Book Instance Not Found');
+                error.status = 404;
+                return next(error);
+            }
+            return res.render('bookInstance', {
+                title: `${bookInstance._id}`,
+                bookInstance,
+            });
+        });
+};
 // Display bookInstance create form on GET.
 exports.bookInstance_create_get = (req, res) =>
     res.send('NOT IMPLEMENTED: bookInstance create get');
