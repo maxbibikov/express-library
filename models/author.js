@@ -30,7 +30,7 @@ AuthorSchema.virtual('url').get(function() {
 // Virtual date of birth formatted
 AuthorSchema.virtual('date_of_birth_formatted').get(function() {
     if (this.date_of_birth) {
-        return moment(this.date_of_birth).format('YYYY');
+        return moment(this.date_of_birth).format('YYYY-MM-DD');
     }
 
     return null;
@@ -39,8 +39,10 @@ AuthorSchema.virtual('date_of_birth_formatted').get(function() {
 // Virtual date of death formatted
 AuthorSchema.virtual('date_of_death_formatted').get(function() {
     if (this.date_of_death) {
-        return moment(this.date_of_death).format('YYYY');
+        return moment(this.date_of_death).format('YYYY-MM-DD');
     }
     return null;
 });
+
+
 module.exports = mongoose.model('Author', AuthorSchema);

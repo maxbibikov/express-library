@@ -2,10 +2,10 @@ extends layout
 
 block content
   h1= title
-  p Welcome to our mvc library project. Built with 💖 + node-js, express, mongo, pug.
+  p Welcome to MVC library project. Built with: #[strong Node-js, Express, MongoDB, Pug, Bootstrap].
   hr
 
-  h3 📚 Look at all cool stuff we currently have
+  h3 📚 The Library Stats
   ul(class='db-stats-list')
     li #[strong Books:] !{data.bookCount}
     li #[strong Copies:] !{data.bookInstanceCount}

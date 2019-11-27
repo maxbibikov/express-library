@@ -20,3 +20,12 @@ block content
           p #{authorBook.summary}
       else
         p Author has no books.
+  hr
+  div.row
+    div.col-sm
+      a(href=author.url + '/delete').list-group-item.list-group-item-action.text-center 🔥Delete Author
+    div.col-sm
+      a(href=author.url + '/update').list-group-item.list-group-item-action.text-center ✍️ Update Author
+    div.col-sm
+    div.col-sm
+

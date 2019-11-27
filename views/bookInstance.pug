@@ -15,3 +15,14 @@ block content
       span.text-warning #{bookInstance.status}
   if bookInstance.status!='Available'
     p #[strong Due Back:] #{bookInstance.due_back_formatted}
+  hr
+  div.row
+    div.col-sm
+      form(action=bookInstance.url+'/delete' method="post")
+        div.form-group
+          input.form-control(type="hidden" name="bookInstanceID" value=bookInstance._id required="true")
+        button.btn.btn-danger.btn-block(type="submit") 🔥 Delete Book
+    div.col-sm.pt-3
+      a(href=bookInstance.url + '/update').btn.btn-primary.btn-block ✍️ Update Book
+    div.col-sm
+    div.col-sm

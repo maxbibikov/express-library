@@ -9,3 +9,11 @@ block content
         a(href=book.url) #{book.title}
       dd
         p=book.summary
+    hr
+    div.row
+      div.col-sm
+        a(href=genre.url + '/delete').list-group-item.list-group-item-action.text-center 🔥Delete Genre
+      div.col-sm
+        a(href=genre.url + '/update').list-group-item.list-group-item-action.text-center ✍️ Update Genre
+      div.col-sm
+      div.col-sm

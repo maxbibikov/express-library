@@ -1,0 +1,17 @@
+extends layout
+
+block content
+    h1 #{title}
+    h3 #{book.title}
+    if bookInstanceList.length > 0
+        p.text-warning #[strong Delete the following book instances first to delete this Book]
+        for bookInstance in bookInstanceList
+            h4 Book Instances
+            div.list-group
+                a(href=bookInstance.url).list-group-item.list-group-item-action #{bookInstance.imprint} (ID: #{bookInstance._id})
+    else
+        p.text-warning Do you really want to delete this Book?
+        form(method="POST" action="")
+            div.form-group
+                input.form-control(type="hidden" name="bookID" value=book._id required="true")
+            button(type="submit").btn.btn-danger DELETE
