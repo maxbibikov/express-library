@@ -7,7 +7,7 @@ const Book = require('../models/book');
 
 // Display list of all Authors.
 exports.author_list = (req, res) => {
-    Author.find()
+    return Author.find()
         .sort([['family_name', 'ascending']])
         .exec((error, authorList) => {
             if (error) {
