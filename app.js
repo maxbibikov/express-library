@@ -7,8 +7,9 @@ const mongoose = require('mongoose');
 const compression = require('compression');
 const helmet = require('helmet');
 
-const mongoDB =
+const MONGODB_DEV_URL =
     'mongodb+srv://maxbibikov:4s0Hd2mwtJiSk0Z4Vw@cluster0-bbns4.gcp.mongodb.net/local_library?retryWrites=true&w=majority';
+const MONGODB_URL = process.env.MONGODB_URL || MONGODB_DEV_URL;
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const catalogRouter = require('./routes/catalog');
@@ -17,7 +18,10 @@ const app = express();
 
 app.use(helmet());
 
-mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(MONGODB_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+});
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'mongoDB connection error'));
 
